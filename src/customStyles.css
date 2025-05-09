@@ -1,0 +1,30 @@
+/* customStyles.css */
+.add-medicine-modal {
+    @apply text-white text-sm leading-relaxed;
+
+ 
+    
+  }
+  
+  .add-medicine-modal input{
+    border: none;
+    border-radius: 4px;
+    padding: 10px 10px;
+    background-color: rgb(0, 14, 26);
+   
+    
+  }
+
+  .add-medicine-modal select{
+    border: none;
+    border-radius: 4px;
+    padding: 2px 10px;
+    margin: px;
+    background-color: rgb(0, 14, 26);
+    
+  }
+
+  .add-medicine-modal input:focus{
+    background-color: rgb(0, 0, 24);
+  }
+  
