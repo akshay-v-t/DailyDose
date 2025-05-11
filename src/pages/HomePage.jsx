@@ -5,6 +5,7 @@ import { NavLink, Outlet } from 'react-router-dom'
 import Dashboard from './Dashboard'
 import CardGrid from '../components/CardGrid'
 import SideBar from '../components/SideBar'
+import CurrentTime from '../components/CurrentTime'
 
 const HomePage = () => {
   return (
@@ -17,7 +18,7 @@ const HomePage = () => {
   <div className="relative z-10 box-border border-blue-950 border-2 rounded-xl p-4 min-h-screen" >
 
     <div className='flex justify-between pb-4'>
-    <h1 className='text-2xl font-medium '>DailyDose</h1> <MedicationForm/>
+    <h1 className='text-2xl font-medium '>DailyDose</h1> <CurrentTime/> <MedicationForm/> 
 
     </div>
   

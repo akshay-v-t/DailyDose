@@ -16,7 +16,7 @@ const MedicationForm = () => {
     setIsOpen(false)
   }
 
-    const {register, handleSubmit, reset } = useForm();
+    const {register, handleSubmit, reset, watch } = useForm();
 
     const dispatch = useDispatch();
 
@@ -29,16 +29,21 @@ const MedicationForm = () => {
               unit: data.dosage.unit
               
             },
-            frequency:data.frequency,
+            timings:data.timings,          
             startDate: data.startDate,
-            endDate: data.endDate,
-            timesOfDay: data.timesOfDay,
+            endDate: data.endDate,         
             dietaryInstructions: data.dietaryInstructions,
+            notes: data.notes,
+
+
             reminder: data.reminder,
             taken:false,
         }));
         reset();
     }
+
+    const selectedTimings = watch("timings", [])
+    
 
 
 
@@ -57,9 +62,9 @@ Add Medicine </Button>
           <div className="flex min-h-full items-center justify-center p-4">
             <DialogPanel
               transition
-              className="w-full max-w-md rounded-xl bg-white/5 p-6 backdrop-blur-2xl duration-300 ease-out data-closed:transform-[scale(95%)] data-closed:opacity-0"
+              className="w-full max-w-2xl rounded-xl bg-white/5 p-6 backdrop-blur-2xl duration-300 ease-out data-closed:transform-[scale(95%)] data-closed:opacity-0"
             >
-              <DialogTitle as="h3" className="text-xl mb-4 font-medium text-white ">
+              <DialogTitle as="h3" className="text-xl mb-4 font-medium text-white border-b-1 border-gray-500 pb-3 w-fit ">
                 Medicine Details
               </DialogTitle>
               
@@ -69,8 +74,8 @@ Add Medicine </Button>
 
       {/* ---------------------- Medicine Name Start -----------------------   */}
 
-      <div className='fl'>
-        <label htmlFor="medicineName" className="block font-medium mb-1">Medicine Name</label>
+      <div className='flex items-center gap-4'>
+        <label htmlFor="medicineName" className="block font-medium mb-1 min-w-fit">Medicine Name : </label>
         <input 
         type="text"
         name='medicineName'
@@ -89,97 +94,106 @@ Add Medicine </Button>
       {/* ---------------------- Dosage Start -----------------------   */}
         
     
-<div>
-<label htmlFor="dosage" className="block font-medium mb-1">Dosage</label>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+  <div>
+    <label htmlFor="quantity" className="block font-medium text-sm text-white">Quantity</label>
+    <input
+      type='number'
+      placeholder='Enter Quantity'
+      className='mt-1 w-full rounded-md border border-gray-300 bg-white/10 px-3 py-2 text-white focus:outline-none focus:ring-2 focus:ring-green-500'
+      {...register("dosage.amount")}
+    />
+  </div>
 
-<div className='flex gap-2 justify-between'>
+  <div>
+    <label htmlFor="unit" className="block font-medium text-sm text-white ">Unit</label>
+    <select
+      className='mt-1 w-full rounded-md border border-gray-300 bg-white/10  px-3 py-2 h-10 text-white focus:outline-none focus:ring-2 focus:ring-green-500 '
+      {...register("dosage.unit")}
+    >
 
-  <div className='flex gap-4'>
-
-
-<label htmlFor="quantity" className="block font-medium mb-1">Quantity : </label>
-
-<input
-     type='text'
-     name='quantity'
-     
-     className='outline-0'
-
-     {...register("dosage.amount")}
-     
-     />
-
-
-
-</div>
-
-
-<div className='flex gap-4 align-middle'>
-<label htmlFor="dosage" className="block font-medium mb-1">Unit : </label>
-
-     <select className='bg-[#191D28] outline-0'  {...register("dosage.unit")}>
-
+<option value="tablet" >tablet</option>
       <option value="ml">ml</option>
-      <option value="ml">mg</option>
-
-      <option value="ml">tablet</option>
-
-     
-
-     </select>
-</div>
+      <option value="mg">mg</option>
+      
+    </select>
+  </div>
 </div>
 
-
-
-</div>
 
  {/* ---------------------- Dosage End -----------------------   */}
 
+  {/* ---------------------- Timings Start -----------------------   */}
+  <div>
+  <label className="block font-medium text-sm text-white mb-2">Timings</label>
+  <div className="flex flex-wrap gap-4">
+    {["morning", "noon", "evening", "night"].map((time) => (
+      <label key={time} className="flex items-center gap-2 text-white">
+        <input type="checkbox" value={time} {...register("timings")} />
+        {time.charAt(0).toUpperCase() + time.slice(1)}
+      </label>
+    ))}
+  </div>
+</div>
+
+{
+    selectedTimings.length >0 && (
+      <div className='flex gap-2'> <p>Frequency : </p>
+        {
+         selectedTimings.length === 1 ? <p> 1 time a day</p> : <p> {selectedTimings.length} times a day</p>
+        }
+        
+      </div>
+    )
+  }
 
 
- {/* ---------------------- Frequency Start -----------------------   */}
-
-   <div className='flex gap-4 '>
-   <label htmlFor="medicineName" className="block font-medium mb-1">Frequency : </label>
-        <select name="frequency" id="" placeholder="frequency"
-        {...register('frequency', {required:true})} className='bg-[#191D28]'>
-
-        <option value="1 time/day">1 time/day</option>
-        <option value="2 time/day">2 times/day</option>
-        <option value="3 time/day">3 times/day</option>
-        <option value="4 time/day">4 times/day</option>
+   {/* ---------------------- Timings End -----------------------   */}
 
 
-     </select>
-
-    
-    </div> 
-
- {/* ---------------------- Frequency End -----------------------   */}
 
 
   {/* ---------------------- Dates Start -----------------------   */}
+  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+  <div>
+    <label htmlFor="startDate" className="block font-medium text-sm text-white mb-1">Start Date</label>
+    <input type='date' className="w-full rounded-md bg-white/10 px-3 py-2 text-white" {...register("startDate")} />
+  </div>
 
-     <div className='flex gap-2'>
+  <div>
+    <label htmlFor="endDate" className="block font-medium text-sm text-white mb-1">End Date</label>
+    <input type='date' className="w-full rounded-md bg-white/10 px-3 py-2 text-white" {...register("endDate")} />
+  </div>
+</div>
 
-     <label htmlFor='startDate'>Start Date : </label>
+  {/* ---------------------- Dates End -----------------------   */}
+  
+  {/* ---------------------- Dietary Instructions Start -----------------------   */}
+
+  <div>
+  <label className="block font-medium text-sm text-white mb-2">Dietary Instructions</label>
+  <div className="flex gap-6">
+    <label className="flex items-center gap-2 text-white">
+      <input type="radio" value="Before Food" {...register("dietaryInstructions")} />
+      Before Food
+    </label>
+    <label className="flex items-center gap-2 text-white">
+      <input type="radio" value="After Food" {...register("dietaryInstructions")} />
+      After Food
+    </label>
+  </div>
+</div>
 
 
-<input type='date'
+<div>
+  <label htmlFor="notes" className="block font-medium text-sm text-white mb-2">Notes</label>
+  <textarea
+    className="w-full h-24 rounded-md bg-white/10 px-3 py-2 text-white resize-none"
+    {...register("notes")}
+  />
+</div>
 
-{...register("startDate")}/>
-
-
-<label htmlFor='endDate'>End Date : </label>
-
-
-<input type='date'
-
-{...register("endDate")}/>
-
-     </div>
-  {/* ---------------------- Dates Start -----------------------   */}
+  {/* ---------------------- Notes End -----------------------   */}
     
 
        
