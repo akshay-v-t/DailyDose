@@ -27,7 +27,9 @@ const medicationsSlice = createSlice({
 
             setMedication: (state,action)=>{
                 state.list = action.payload
-            }
+            },
+
+           
         
     }
 });

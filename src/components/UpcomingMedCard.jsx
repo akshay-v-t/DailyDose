@@ -58,6 +58,14 @@ const UpcomingMedCard = () => {
                 <p>Today's Doses</p>
                 <div className='flex gap-2'>
 
+                  {
+                    Array.isArray(med.timings) && med.timings.map(item=>
+                      item.charAt(0).toUpperCase() + item.slice(1).toLowerCase()
+                    ).join(' ')
+                  }
+
+           
+
                   <label htmlFor="morning" className='flex items-center gap-1'> 
 
                   <input type="checkbox" name='morning' /> Morning
@@ -87,9 +95,13 @@ const UpcomingMedCard = () => {
 
                <div className='flex-col items-cente mt-5'>
 
-               <p>1/3 Taken</p>
+<p>1/{Array.isArray(med.timings) ? med.timings.length : 0} Taken</p>
 
-               <div class="bg-blue-600 h-2  dark:bg-green-500 mt-1" style={{width: '54%'}}></div> 
+               {
+               
+               }
+
+               <div className="bg-blue-600 h-2  dark:bg-green-500 mt-1" style={{width: '64%'}}></div> 
                
 
 

@@ -1,8 +1,152 @@
-import React from 'react'
+
+import { useDispatch, useSelector } from 'react-redux'
+import { deleteMedication, toggleTaken } from '../features/medications/medicationsSlice';
 
 const MyMeds = () => {
+   const medications = useSelector((state)=>state.medications.list);
+    const dispatch = useDispatch();
+
+    const handleDelete =(id)=>{
+        if(window.confirm("Are you sure you want to delete this medicine ? ")){
+            dispatch(deleteMedication(id))
+        }
+    }
+
+  
   return (
-    <div>MyMeds</div>
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-2">
+
+        {
+            medications.map((med,index)=>{
+              return   <div key={index} className= {med.taken ? 'bg-gray-800 p-6 rounded w-full drop-shadow-xl border-blue-950 border-1 flex gap-2 flex-col'  : 'bg-gray-900 p-6 rounded w-full drop-shadow-xl border-blue-950 border-1 flex gap-2 flex-col  '}>
+             
+             
+             <div className='flex justify-between items-center'>
+             <p className={med.taken ? 'font-medium text-lg tracking-wider mb-2 line-through text-gray-600'  : 'font-medium text-lg tracking-wider mb-2' } >{med.name}</p> 
+             <p className='bg-green-800 rounded px-2 w-fit text-sm'> {med.dietaryInstructions ?  med.dietaryInstructions : ''} </p>
+
+
+
+             </div>
+
+             <div className='bg-green-950 rounded p-2 text-center font-bold gap-2 flex flex-col'>
+              <p >  {  med.dosage ? `${med.dosage.amount} ${med.dosage.unit}` : 'No dosage info'} </p>
+              <p className='text-sm font-normal'>   {Array.isArray(med.timings) ? `${med.timings.length} times a day` : 'No data found'}</p>
+             </div>
+             
+             
+              
+              <div className='flex justify-between text-sm'>
+              <p>Duration : { (new Date(med.endDate)- new Date(med.startDate))/(1000*60*60*24)} days </p>
+             
+            </div>
+              
+              <div className='flex justify-between text-sm'> 
+              <p>{med.startDate}</p> -
+               
+                  
+               <p>{med.endDate}</p>
+
+               
+               
+               
+              
+   
+             </div>
+
+             <hr className='bg-red-500' />
+
+             <div>
+             <div>
+                <p>Today's Doses</p>
+                <div className='flex gap-2'>
+                  <ul className='flex gap-2'>
+
+                  {
+
+                    
+                    Array.isArray(med.timings) && med.timings.map((item,index)=>
+                      
+                      
+                      (
+                      
+                           <li key={index} className='flex items-center gap-2'><span
+          className={`w-3 h-3 rounded-full bg-green-500`}
+        ></span>{ item.charAt(0).toUpperCase() + item.slice(1).toLowerCase()} </li>
+
+                      
+                       
+
+                      
+                     
+                    ))
+                  } 
+
+                  </ul>
+
+           
+
+                 
+
+               
+
+
+
+                </div>
+               </div>
+
+               <div className='flex-col items-cente mt-5'>
+
+               <p>1/{Array.isArray(med.timings) ? `${med.timings.length} Taken` : 'No data found'} </p>
+
+               {
+               
+               }
+
+               <div class="bg-blue-600 h-2  dark:bg-green-500 mt-1" style={{width: '54%'}}></div> 
+               
+
+
+
+               </div>
+
+               
+
+
+
+           
+
+
+             </div>
+
+             <div>
+              <p className='text-xs'>{med.notes}</p>
+             </div>
+
+             <div className='gap-2 flex'>
+                
+                <button onClick={()=>dispatch(toggleTaken(med.id))} className='bg-blue-800 rounded px-4 pb-1 mt-4 text-sm cursor-pointer w-[50%]' > {med.taken ? 'Taken' : 'Mark Taken' } </button>
+
+                <button onClick={()=>handleDelete(med.id)} className='bg-orange-900 rounded px-4 pb-1 mt-4 cursor-pointer w-[50%]'>Delete</button>
+             
+             
+             </div>
+             
+              
+            
+              <p className='text-xs text-center' >  {new Date(med.startDate) <  new Date() ? <p> {Math.ceil((new Date(med.endDate)- new Date())/(1000*60*60*24))} days remaining  </p> : 'Not Started Yet' } </p>
+           </div>
+            })
+        }
+
+
+       
+
+
+
+
+
+    </div>
   )
 }
 

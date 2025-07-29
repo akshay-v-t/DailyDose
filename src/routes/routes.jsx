@@ -1,5 +1,6 @@
 import App from "../App";
 import Account from "../pages/Account";
+import Analytics from "../pages/Analytics";
 import Dashboard from "../pages/Dashboard";
 import Inventory from "../pages/Inventory";
 import MyHealth from "../pages/MyHealth";
@@ -32,6 +33,10 @@ const routes = [
             {
                 path: 'prescriptions',
                 element: <Prescriptions/>
+            },
+            {
+                path: 'analytics',
+                element: <Analytics/>
             },
             {
                 path: 'inventory',
